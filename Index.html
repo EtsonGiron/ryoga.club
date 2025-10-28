@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inicio | Ryoga</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Courier New', Courier, monospace;
+      overflow: hidden;
+    }
+
+    .mensaje-central {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    .mensaje-flotante {
+      position: absolute;
+      font-size: 1rem;
+      color: #aaa;
+      cursor: pointer;
+      animation: desaparecer 10s linear forwards;
+    }
+
+    @keyframes desaparecer {
+      0% { opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    #btn-sonido {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background: transparent;
+      color: #999;
+      border: 1px solid #444;
+      padding: 6px 10px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: monospace;
+    }
+
+    #btn-sonido:hover {
+      color: #fff;
+      border-color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="mensaje-central">Bienvenido a Ryoga.club</div>
+
+  <button id="btn-sonido">🔊 Activar sonido</button>
+  <audio id="audio-fondo" loop>
+    <source src="https://files.catbox.moe/nc5zbc.mp3" type="audio/mpeg" />
+    Tu navegador no soporta audio.
+  </audio>
+
+  <script>
+    const mensajes = [
+      { texto: "Archivo 047 encontrado", link: "https://ryoga.club/047" },
+      { texto: "Acceso denegado [ver log]", link: "https://ryoga.club/logs" },
+      { texto: "Nuevo expediente: confidencial", link: "https://ryoga.club/confidencial" },
+      { texto: "Último registro: 23:17hrs", link: "https://ryoga.club/registro" },
+      { texto: "⚠️ Posible brecha detectada", link: "https://ryoga.club/alerta" }
+    ];
+
+    function crearMensaje() {
+      const mensaje = mensajes[Math.floor(Math.random() * mensajes.length)];
+      const span = document.createElement("span");
+      span.classList.add("mensaje-flotante");
+      span.innerText = mensaje.texto;
+      span.style.top = Math.random() * 90 + "vh";
+      span.style.left = Math.random() * 90 + "vw";
+      span.onclick = () => window.open(mensaje.link, '_blank');
+      document.body.appendChild(span);
+
+      setTimeout(() => {
+        span.remove();
+      }, 10000);
+    }
+
+    setInterval(crearMensaje, 2500);
+
+    const btnSonido = document.getElementById("btn-sonido");
+    const audio = document.getElementById("audio-fondo");
+
+    btnSonido.addEventListener("click", () => {
+      audio.play();
+      btnSonido.style.display = "none";
+    });
+
+    // Intenta reproducir automáticamente
+    window.addEventListener('load', () => {
+      audio.play().catch(() => {
+        // Autoplay bloqueado, se requiere clic
+      });
+    });
+  </script>
+</body>
+</html>
